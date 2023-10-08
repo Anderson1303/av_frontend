@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { GridColDef } from "@mui/x-data-grid"
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { IGridParams } from '@/interfaces/IGridParams'
+import { IGridParams } from '../../../interfaces/IGridParams'
 
 import { FilterColunms } from "../FilterColunms/index"
 

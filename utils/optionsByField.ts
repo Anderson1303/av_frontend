@@ -1,4 +1,4 @@
-import { TypeOption } from "@/interfaces/IOption";
+import { TypeOption } from "../interfaces/IOption";
 
 export const ajustedFieldComboBox = (value: string) : TypeOption => {
     if(typeof value !== 'string'){

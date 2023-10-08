@@ -1,6 +1,6 @@
-import { TypeOption } from "@/interfaces/IOption";
-import { IPagination } from "@/interfaces/IPagination";
-import { IResponse } from "@/interfaces/IResponse";
+import { TypeOption } from "../../interfaces/IOption";
+import { IPagination } from "../../interfaces/IPagination";
+import { IResponse } from "../../interfaces/IResponse";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { IconButton, List, Paper, Popper, Stack, Typography, UseAutocompleteReturnValue } from "@mui/material";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
