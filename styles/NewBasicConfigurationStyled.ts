@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from "@/components/Button";
+import { Button, ButtonProps } from "../components/Button";
 import styled from "@emotion/styled";
 import { theme } from "./theme";
 

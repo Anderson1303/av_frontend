@@ -115,7 +115,7 @@ export const ComboBox = <TOption extends TypeOption>({
         <Popover
           pagination={pagination}
           query={query}
-          autocomplete={autocomplete}
+          autocomplete={autocomplete as any}
           width={width}
         >
           {(autocomplete.groupedOptions as TOption[]).map((option, index) => (

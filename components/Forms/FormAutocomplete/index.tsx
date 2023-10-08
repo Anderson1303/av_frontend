@@ -40,7 +40,7 @@ export function FormAutocomplete<T extends FieldValues,>({
             disabled={rest.disabled}
             value={value}
             noOptionsText="Sem opções"
-            isOptionEqualToValue={(option, value: IOption | string) =>
+            isOptionEqualToValue={(option: any, value: IOption | string) =>
               typeof value !== 'string'
                 ? option.value === value.value
                 : value === ""

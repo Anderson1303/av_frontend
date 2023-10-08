@@ -6,7 +6,7 @@ import { FormControl } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
 export interface FormComboBoxProps<T extends FieldValues, TOption
-  extends TypeOption> extends ComboBoxProps<TOption, T> {
+  extends TypeOption> extends ComboBoxProps<TypeOption> {
   control: Control<T, any>;
   defaultValue?: PathValue<T, Path<T>>;
   getValueOption?: (event: TOption | null) => void;
@@ -28,7 +28,7 @@ export function FormComboBox<T extends FieldValues, TOption extends TypeOption>(
 }: FormComboBoxProps<T, TOption>) {
   const name = rest.inputProps!!.name as Path<T>;
   const messageError = error != null && error[name] != undefined ? error!![name].message : "";
-  const dataSet = useSet<T>();
+  const dataSet = useSet<string>();
   const [valSelect,setValSelect] = useState("");
 
   useEffect(() => {
@@ -55,15 +55,6 @@ export function FormComboBox<T extends FieldValues, TOption extends TypeOption>(
                   value={valSelect}
                   defaultValue={defaultValue ?? "" as any}
                   disabled={isBloqued}
-                  dataSet={dataSet}
-                  setValue={setValue}
-                  resetField={resetField}
-                  watch={watch}
-                  error={error}
-                  getValues={getValues}
-                  validateError={validateError}
-                  dependsOn={dependOns}
-                  parentOn={parentOn}
                   onChange={async (_: any, value : any) => {
                     setValue!!(name,value);
                     setValue(dependOns,'')

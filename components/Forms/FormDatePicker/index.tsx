@@ -2,7 +2,6 @@ import { BaseTextFieldProps, FormControl, TextField, Box, FormLabel, Typography,
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import ptBrLocale from 'date-fns/locale/pt-BR';
 import { Control, Controller, FieldValues, Path, PathValue, UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -49,7 +48,7 @@ export function FormDatePicker<T extends FieldValues,>({
             field: { onChange, value, ref },
             fieldState: { error }
           }) => (
-            <LocalizationProvider {...register!!(name)} dateAdapter={AdapterDateFns} locale={ptBrLocale}>
+            <LocalizationProvider {...register!!(name)} dateAdapter={AdapterDateFns} >
               <DatePicker {...register!!(name)}
                 value={value ?? null}
                 onChange={(a: any,b: any) => {
