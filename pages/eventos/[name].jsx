@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { ButtonDelete } from '../../components/Button/ButtonDelete'
 import { Grid } from "@mui/material";
 import { useRouter } from 'next/router';
-import Head from 'next/head';
+import { enqueueSnackbar } from "notistack";
 
 moment.locale("pt-BR");
 const localizer = momentLocalizer(moment);
@@ -48,7 +48,7 @@ const CustomCalendar = (pageProps) => {
   });
   const endpoint = "patient/read";
 
-  const getEvents = async (date) => {
+  const getEvents = async (date,typeEvent) => {
     const results = await api.post('events/read',{
       date,typeEvent
     });
@@ -90,13 +90,8 @@ const CustomCalendar = (pageProps) => {
     setOpen({new: false})
   }
 
-  const onConfirm = (id, name) => {
-    const {start,end,resourceId} = event;
-    if(id != 0){
-      setEvents(current => [...current, {
-        title: name,start,end,resourceId
-      }]);
-    }
+  const onConfirm = async (id, name) => {
+    await refreshEvents(typeEvent)
   }
 
   const handleEventSelection = (e) => {
@@ -105,10 +100,21 @@ const CustomCalendar = (pageProps) => {
 
   const handleDeleteSelection = async () => {
     setSelection(null);
-    const res = await deleteEvent(selection.id);
-    if(res.success){
-      const results = await getEvents(moment(eventDate).format('YYYY-MM-DD'));
-      setEvents(results);
+    try{
+      const res = await deleteEvent(selection.id);
+      if(res.success){
+        const results = await getEvents(moment(eventDate).format('YYYY-MM-DD'),typeEvent);
+        setEvents(results);
+        enqueueSnackbar(
+          `Notificação Excluida com Sucesso`,
+          { variant: "success" }
+        );
+      }
+    }catch(e){
+      enqueueSnackbar(
+        `Ocorreu um erro: Não foi possível excluir por que a Notificação já foi enviada` ?? "Internal Server Error",
+        { variant: "error" }
+      );
     }
   };
 
@@ -117,19 +123,19 @@ const CustomCalendar = (pageProps) => {
     return results.data;
   }
 
-  const refreshEvents = async () => {
-    const results = await getEvents(moment(eventDate).format('YYYY-MM-DD'));
+  const refreshEvents = async (typeEvent) => {
+    const results = await getEvents(moment(eventDate).format('YYYY-MM-DD'),typeEvent);
     setEvents(results);
   }
 
   const refreshResource = async (typeEvent) => {
     const data = await getResources(typeEvent);
     setResourceMap(data);
-    await refreshEvents();
+    await refreshEvents(typeEvent);
   }
 
   useEffect(() => {
-    refreshEvents();
+    refreshEvents(typeEvent);
   },[eventDate])
 
   useEffect(() => {
@@ -144,7 +150,6 @@ const CustomCalendar = (pageProps) => {
       <Grid xs={12} sx={{pb: 1, pt: 1}}>
         <ButtonDelete disabled={selection == null} onClick={handleDeleteSelection}>Excluir</ButtonDelete>
       </Grid>
-      typeEvent: {typeEvent}
       <BigCalendar
         selectable
         localizer={localizer}
