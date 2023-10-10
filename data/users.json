@@ -1,9 +1,16 @@
 [
     {
         "id": 1,
-        "username": "test",
-        "password": "test",
-        "firstName": "Test",
-        "lastName": "User"
+        "username": "nutriclaudine123",
+        "password": "nutriclaudineuser123",
+        "firstName": "Nutri",
+        "lastName": "Claudine"
+    },
+    {
+        "id": 2,
+        "username": "gui123",
+        "password": "guiuser123",
+        "firstName": "Guilherme",
+        "lastName": ""
     }
 ]

@@ -1,11 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next/types";
 import { authHeader} from '../helpers/fetch-wrapper';
-import {userService} from '../services/user.service';
 
 type RequestConfig = Omit<AxiosRequestConfig, 'headers'> & { headers: AxiosRequestHeaders }
-
-var unauthoraizedCount = 0;
 
 export function setupAPI(
   baseURL: string,
@@ -20,18 +17,18 @@ export function setupAPI(
     baseURL: baseURL ?? process.env.BASE_URL
   });
 
-  api.interceptors.response.use(function (response) {
-    return response;
-  }, function (error) {
-    unauthoraizedCount++;
-      if(error.response.status == 401 && unauthoraizedCount == 2){
-        userService.logout();
-      }
-    return Promise.reject(error);
-  });
-
+  api.interceptors.request.use(
+    function (req) {
+      (req.headers as any).Authorization = authHeader().Authorization;
+      return req;
+    },
+    (err) => {
+      return Promise.reject(err);
+    }
+  );
   return api;
 }
+
 
 export const apiSSR = (
   ctx?: GetServerSidePropsContext,
