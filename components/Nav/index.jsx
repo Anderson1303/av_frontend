@@ -1,31 +1,53 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import { userService } from "../../services";
+import { redirect } from "next/dist/server/api-utils";
+import Router, {useRouter} from 'next/router'
 
-import { NavLink } from '.';
-import { userService } from 'services';
+export default function App() {
 
-export { Nav };
+  const [users, setUsers] = useState(null);
+  const {logout} = userService;
+  
+  const router = useRouter();
 
-function Nav() {
-    const [user, setUser] = useState(null);
+  const refreshLogout = () => {
+    logout();
+    setUsers(userService.userValue);
+  }
 
-    useEffect(() => {
-        const subscription = userService.user.subscribe(x => setUser(x));
-        return () => subscription.unsubscribe();
-    }, []);
+  useEffect(() => {
+    setUsers(userService.userValue)
+  },[])
 
-    function logout() {
-        userService.logout();
-    }
-
-    // only show nav when logged in
-    if (!user) return null;
-    
-    return (
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <div className="navbar-nav">
-                <NavLink href="/" exact className="nav-item nav-link">Home</NavLink>
-                <a onClick={logout} className="nav-item nav-link">Logout</a>
-            </div>
-        </nav>
-    );
+  return (
+    <Navbar isBordered>
+      <NavbarContent as="div" className="items-center" justify="end">
+        <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform"
+              color="secondary"
+              name="Jason Hughes"
+              size="sm"
+              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            {users != null && <DropdownItem key="profile" className="h-14 gap-2">
+              <p>logado com</p>
+              <p className="font-semibold">{users.username}</p>
+            </DropdownItem>}
+            <DropdownItem key="settings" onClick={() => Router.push('/paciente')} >Paciente</DropdownItem>
+            <DropdownItem key="team_settings" onClick={() => Router.push('/paciente/programa')}>Vinculo de Programa e Paciente</DropdownItem>
+            {users != null && <DropdownItem onClick={refreshLogout} key="logout" color="danger">
+              Sair
+            </DropdownItem>}
+          </DropdownMenu>
+        </Dropdown>
+      </NavbarContent>
+    </Navbar>
+  );
 }

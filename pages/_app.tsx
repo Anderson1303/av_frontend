@@ -14,7 +14,8 @@ import { theme } from '../styles/theme';
 
 import 'styles/globals.css';
 import { userService } from '../services';
-import { Nav } from '../components';
+import {NextUIProvider} from "@nextui-org/react";
+import Nav from '../components/Nav';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -24,7 +25,8 @@ interface MyAppProps extends AppProps {
 
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {    const router = useRouter();
     const [authorized, setAuthorized] = useState(false);
-
+    const [users, setUsers] = useState(null);
+  
     useEffect(() => {
         // run auth check on initial load
         authCheck(router.asPath);
@@ -35,6 +37,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
 
         // run auth check on route change
         router.events.on('routeChangeComplete', authCheck)
+        setUsers(userService.userValue);
 
         // unsubscribe from events in useEffect return function
         return () => {
@@ -42,6 +45,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
             router.events.off('routeChangeComplete', authCheck);
         }
     }, []);
+    
 
     function authCheck(url) {
         // redirect to login page if accessing a private page and not logged in 
@@ -62,6 +66,9 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
             <QueryClientProvider client={queryClient}>
                 <CacheProvider value={emotionCache}>
                     <ThemeProvider theme={theme}>
+                    <NextUIProvider>
+                        <Nav />
+                    </NextUIProvider>
                     <SnackbarProvider
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                         preventDuplicate
