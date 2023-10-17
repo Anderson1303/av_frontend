@@ -43,11 +43,9 @@ const SearchPatientProgram = ({open,onClose,onChangeFilterParams,filterSearch}: 
             filters.push({property: 'patientId', operator: '=', value: patientId});
         })
 
-
         dataSetProgram.toArray().map(programId => {
             filters.push({property: 'programId', operator: '=', value: programId});
         })
-        console.log(filters)
         onChangeFilterParams(filters);
         onClose();
     }

@@ -61,7 +61,6 @@ const getDataFilter = async({page,itemsPerPage,filter}) => {
         return pro;
     })
     patientIds.push(0);
-    console.log(patientIds,'pat')
     programIds.push('tests');
     const query = `SELECT prpa.id, pat.name patient, prpa.id_patient, prpa.name_program FROM program_patient prpa
                         join patient pat

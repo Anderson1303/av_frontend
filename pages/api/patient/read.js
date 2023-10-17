@@ -28,7 +28,6 @@ const countRowFilter = async ({filter}) => {
         return pat.value;
     });
     patientIds.push(0);
-    console.log('filterName',filterName)
     const query = `select count(1) from patient pat where upper(pat.name) like upper($1) or pat.id = ANY($2::int[])`;
     const values = [`%${filterName}%`,patientIds];
     const result = await conn.query(

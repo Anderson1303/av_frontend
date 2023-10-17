@@ -17,7 +17,6 @@ export const NewPatient = ({ onClose, onChangeFilterParams }) => {
   const onSubmit = async (e) => {
     try {
       const patient = await newPatient(e);
-      console.log(patient.data,'lolll');
       const {rowCount, rows} = patient.data;
       onClose();
       if(rowCount == 1){

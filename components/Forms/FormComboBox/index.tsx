@@ -32,7 +32,6 @@ export function FormComboBox<T extends FieldValues, TOption extends TypeOption>(
   const [valSelect,setValSelect] = useState("");
 
   useEffect(() => {
-    console.log('init',name,defaultValue)
     setValue(name,defaultValue);
     setValSelect(defaultValue as string)
     !!getValueOption && getValueOption(defaultValue as TOption);

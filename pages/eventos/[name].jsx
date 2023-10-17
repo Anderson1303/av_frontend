@@ -158,6 +158,25 @@ const CustomCalendar = (pageProps) => {
         defaultView={Views.DAY}
         onSelectSlot={onSelectSlot}
         onSelectEvent={handleEventSelection}
+        eventPropGetter={
+          (event, start, end, isSelected) => {
+            let newStyle = {
+              backgroundColor: "green",
+              color: 'black',
+              borderRadius: "3px",
+              border: "none"
+            };
+      
+            if (event.isMine){
+              newStyle.backgroundColor = "lightgreen"
+            }
+      
+            return {
+              className: "",
+              style: newStyle
+            };
+          }
+        }
         messages={{
           next: "Próximo",
           previous: "Anterior",

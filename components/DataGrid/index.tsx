@@ -140,10 +140,6 @@ export const DataGrid = <T extends GridValidRowModel>({
     }
   );
 
-  useEffect(() => {
-    console.log('lol',filterParams)
-  },[filterParams])
-
   const getOperator = (operator: string) => {
     let newOperator
 
