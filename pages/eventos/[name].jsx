@@ -165,9 +165,7 @@ const CustomCalendar = (pageProps) => {
               backgroundColor: "green",
               color: 'black',
               borderRadius: "3px",
-              border: "none",
-              marginTop: 25,
-              marginBottom: 25
+              border: "none"
             };
       
             if (event.enviada == 1){
