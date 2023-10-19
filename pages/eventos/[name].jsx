@@ -160,15 +160,20 @@ const CustomCalendar = (pageProps) => {
         onSelectEvent={handleEventSelection}
         eventPropGetter={
           (event, start, end, isSelected) => {
+            console.log(event);
             let newStyle = {
               backgroundColor: "green",
               color: 'black',
               borderRadius: "3px",
-              border: "none"
+              border: "none",
+              marginTop: 25,
+              marginBottom: 25
             };
       
-            if (event.isMine){
-              newStyle.backgroundColor = "lightgreen"
+            if (event.enviada == 1){
+              newStyle.backgroundColor = "green"
+            }else{
+              newStyle.backgroundColor = "yellow"
             }
       
             return {
