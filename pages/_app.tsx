@@ -16,6 +16,7 @@ import 'styles/globals.css';
 import { userService } from '../services';
 import {NextUIProvider} from "@nextui-org/react";
 import Nav from '../components/Nav';
+import { api } from '../services/api';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -26,7 +27,8 @@ interface MyAppProps extends AppProps {
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {    const router = useRouter();
     const [authorized, setAuthorized] = useState(false);
     const [users, setUsers] = useState(null);
-  
+    const [eventsType, setEventsType] = useState([]);
+
     useEffect(() => {
         // run auth check on initial load
         authCheck(router.asPath);
@@ -37,14 +39,14 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
 
         // run auth check on route change
         router.events.on('routeChangeComplete', authCheck)
-        setUsers(userService.userValue);
-
+        refreshEvents();
+       
         // unsubscribe from events in useEffect return function
         return () => {
             router.events.off('routeChangeStart', hideContent);
             router.events.off('routeChangeComplete', authCheck);
         }
-    }, []);
+    }, [router.isReady]);
     
 
     function authCheck(url) {
@@ -55,11 +57,21 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
             setAuthorized(false);
             router.push({
                 pathname: '/login',
-                query: { returnUrl: router.asPath }
+                query: { returnUrl: router.asPath,  }
             });
         } else {
             setAuthorized(true);
         }
+    }
+
+    const typeEvents = async () => {
+        const results = api.get('events/type/read');
+        return (await results).data.data;
+    }
+
+    const refreshEvents = async () => {
+        const data = await typeEvents();
+        setEventsType(data);
     }
 
     return (
@@ -67,7 +79,7 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
                 <CacheProvider value={emotionCache}>
                     <ThemeProvider theme={theme}>
                     <NextUIProvider>
-                        <Nav />
+                        <Nav eventsType={eventsType}/>
                     </NextUIProvider>
                     <SnackbarProvider
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}

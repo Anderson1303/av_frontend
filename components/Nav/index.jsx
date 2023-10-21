@@ -4,7 +4,7 @@ import { userService } from "../../services";
 import { redirect } from "next/dist/server/api-utils";
 import Router, {useRouter} from 'next/router'
 
-export default function App() {
+export default function App({eventsType}) {
 
   const [users, setUsers] = useState(null);
   const {logout} = userService;
@@ -40,6 +40,9 @@ export default function App() {
               <p>logado com</p>
               <p className="font-semibold">{users.username}</p>
             </DropdownItem>}
+            {eventsType.map(item => {
+              return <DropdownItem key={item.name_program} onClick={() => Router.push(`/evento/${item.name_program}`)} >Evento {item.name_program}</DropdownItem>
+            })}
             <DropdownItem key="settings" onClick={() => Router.push('/paciente')} >Paciente</DropdownItem>
             <DropdownItem key="team_settings" onClick={() => Router.push('/paciente/programa')}>Vinculo de Programa e Paciente</DropdownItem>
             {users != null && <DropdownItem onClick={refreshLogout} key="logout" color="danger">

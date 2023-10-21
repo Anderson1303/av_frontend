@@ -50,6 +50,8 @@ function _delete(url) {
 // helper functions
 
 function authHeader(url) {
+    if(userService == undefined)
+        return {};
     // return auth header with jwt if user is logged in and request is to the api url
     const user = userService.userValue;
     const isLoggedIn = user && user.token;
