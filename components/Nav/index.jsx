@@ -3,10 +3,14 @@ import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownIte
 import { userService } from "../../services";
 import { redirect } from "next/dist/server/api-utils";
 import Router, {useRouter} from 'next/router'
+import { api } from "../../services/api";
+import { ButtonDelete } from "../Button/ButtonDelete";
+import { ButtonAdd } from "../Button/ButtonAdd";
 
 export default function App({eventsType}) {
 
   const [users, setUsers] = useState(null);
+  const [stateWhatsapp,setStateWhatsapp] = useState("UNCONNECTED");
   const {logout} = userService;
   
   const router = useRouter();
@@ -18,22 +22,32 @@ export default function App({eventsType}) {
 
   useEffect(() => {
     setUsers(userService.userValue)
+    statusSession();
   },[])
+
+  const statusSession = async () => {
+    const idtokenverdinho = (await api.get('verdinho/session')).data.data;
+    if(idtokenverdinho.length > 0){
+      const results = await api.get(`http://127.0.0.1:3000/session/status/${idtokenverdinho[0].value}`);
+      const state = results.data.data.state;
+      setStateWhatsapp(state);
+    }
+  }
 
   return (
     <Navbar isBordered>
       <NavbarContent as="div" className="items-center" justify="end">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="secondary"
-              name="Jason Hughes"
-              size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-            />
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name="Jason Hughes"
+                size="sm"
+                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             {users != null && <DropdownItem key="profile" className="h-14 gap-2">
@@ -51,6 +65,8 @@ export default function App({eventsType}) {
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
+      {stateWhatsapp == "CONNECTED" && <span className="connected">Conectado</span>}
+      {stateWhatsapp != "CONNECTED" && <span className="no-connected">Não Conectado</span>}
     </Navbar>
   );
 }

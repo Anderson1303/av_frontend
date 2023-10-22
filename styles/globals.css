@@ -8,6 +8,22 @@ a { cursor: pointer; }
     min-height: 350px;
 }
 
+.connected{
+    color: white;
+    background-color: green;
+    border-radius: 10px;
+    font-size: 22px;
+    margin: 4px;
+}
+
+.no-connected{
+    color: white;
+    background-color: red;
+    border-radius: 10px;
+    font-size: 22px;
+    margin: 4px;
+}
+
 /* custom code start*/
 #EventLog b {
     color: #388e3c;
