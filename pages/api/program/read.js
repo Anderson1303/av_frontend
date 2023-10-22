@@ -4,7 +4,7 @@ import { apiHandler } from 'helpers/api';
 const countRow = async (gridParams) => {
     const {filter} = gridParams;
     const filterName = filter.length > 0 ? filter[0].value : '';
-    const query = 'select count(1) from program where upper(name) like upper($1)';
+    const query = `select count(1) from program where upper(name) != 'ANIVERSARIO' AND upper(name) like upper($1)`;
     const values = [filterName]
     const result = await conn.query(
         query,values
@@ -15,7 +15,7 @@ const countRow = async (gridParams) => {
 const getData = async (gridParams) => {
     const {page,itemsPerPage,filter} = gridParams;
     const filterName = filter.length > 0 ? filter[0].value : '';
-    const query = 'select distinct name, name id from program where upper(name) like upper($1) ORDER BY id LIMIT $2 OFFSET $3';
+    const query = `select distinct name, name id from program where upper(name) != 'ANIVERSARIO' AND upper(name) like upper($1) ORDER BY id LIMIT $2 OFFSET $3`;
     const values = [`%${filterName}%`,itemsPerPage,itemsPerPage*(page-1)]
     return await conn.query(
         query,values
