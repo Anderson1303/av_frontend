@@ -70,9 +70,11 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
     }
 
     const refreshEvents = async () => {
-        const data = await typeEvents();
-        const results = await api.get(`http://localhost:3000/session/status/${data}`);
-        console.log(results.data);
+        const idtokenverdinho = await typeEvents();
+        if(idtokenverdinho.length > 0){
+            const results = await api.get(`http://localhost:3000/session/status/${idtokenverdinho[0].value}`);
+            console.log(results.data);
+        }
     }
 
     return (
