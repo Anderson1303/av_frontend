@@ -13,13 +13,18 @@ export function setupAPI(
 
   
   const api = axios.create({
-    headers: authHeader('/api'),
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Authorization': authHeader('/api').Authorization,
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': 'GET,DELETE,PATCH,POST,PUT'
+      },
     baseURL: baseURL ?? process.env.BASE_URL
   });
 
   api.interceptors.request.use(
     function (req) {
-      (req.headers as any).Authorization = authHeader().Authorization;
       return req;
     },
     (err) => {

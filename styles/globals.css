@@ -24,6 +24,14 @@ a { cursor: pointer; }
     margin: 4px;
 }
 
+.pendent{
+    color: white;
+    background-color: rgb(185, 185, 43);
+    border-radius: 10px;
+    font-size: 22px;
+    margin: 4px;
+}
+
 /* custom code start*/
 #EventLog b {
     color: #388e3c;

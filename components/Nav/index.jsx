@@ -10,7 +10,7 @@ import { ButtonAdd } from "../Button/ButtonAdd";
 export default function App({eventsType}) {
 
   const [users, setUsers] = useState(null);
-  const [stateWhatsapp,setStateWhatsapp] = useState("UNCONNECTED");
+  const [stateWhatsapp,setStateWhatsapp] = useState("PENDENT");
   const {logout} = userService;
   
   const router = useRouter();
@@ -28,8 +28,7 @@ export default function App({eventsType}) {
   const statusSession = async () => {
     const idtokenverdinho = (await api.get('verdinho/session')).data.data;
     if(idtokenverdinho.length > 0){
-      const results = await api.get(`http://127.0.0.1:3000/session/status/${idtokenverdinho[0].value}`);
-      const state = results.data.data.state;
+      const state = idtokenverdinho[0].value;
       setStateWhatsapp(state);
     }
   }
@@ -66,7 +65,8 @@ export default function App({eventsType}) {
         </Dropdown>
       </NavbarContent>
       {stateWhatsapp == "CONNECTED" && <span className="connected">Conectado</span>}
-      {stateWhatsapp != "CONNECTED" && <span className="no-connected">Não Conectado</span>}
+      {stateWhatsapp != "CONNECTED" && stateWhatsapp != "PENDENT" && <span className="no-connected">Não Conectado</span>}
+      {stateWhatsapp == "PENDENT" && <span className="pendent">Pendente</span>}
     </Navbar>
   );
 }

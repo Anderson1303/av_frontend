@@ -71,7 +71,8 @@ function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: 
 
     const refreshEvents = async () => {
         const data = await typeEvents();
-        setEventsType(data);
+        const results = await api.get(`http://localhost:3000/session/status/${data}`);
+        console.log(results.data);
     }
 
     return (
