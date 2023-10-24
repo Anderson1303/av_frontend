@@ -18,11 +18,6 @@ import { enqueueSnackbar } from "notistack";
 moment.locale("pt-BR");
 const localizer = momentLocalizer(moment);
 
-const resourceMap = [
-  { resourceId: 'consultation', resourceTitle: "Consulta" },
-  { resourceId: 'birthday', resourceTitle: "Aniversário" }
-];
-
 const styles = {
   container: {
     width: "80wh",
@@ -49,13 +44,14 @@ const CustomCalendar = (pageProps) => {
   const endpoint = "patient/read";
 
   const getEvents = async (date,typeEvent) => {
+
     const results = await api.post('events/read',{
       date,typeEvent
     });
 
     const data = results.data.data.map(event => {
-      event.start = moment(event.start,'YYYY-MM-DDTHH:mm:ss').toDate();
-      event.end = moment(event.end,'YYYY-MM-DDTHH:mm:ss').toDate();
+      event.start = moment(event.start).toDate();
+      event.end = moment(event.end).toDate();
       event.resourceId = event.resourceid;
       return event;
     })
@@ -160,7 +156,7 @@ const CustomCalendar = (pageProps) => {
         onSelectEvent={handleEventSelection}
         eventPropGetter={
           (event, start, end, isSelected) => {
-            console.log(event);
+            console.log(event,'event',start,end);
             let newStyle = {
               backgroundColor: "green",
               color: 'black',
