@@ -70,7 +70,7 @@ export function ButtonCrud({
               onClick={() => handleDelete(selection)}
               disabled={selection?.length == 0 || selection?.length > 1}
             >
-              <b>Excluira</b>
+              <b>Excluir</b>
             </ButtonDelete>
           }
         </>
