@@ -2,7 +2,7 @@ import conn from '../db';
 import { apiHandler } from 'helpers/api';
 
 const getData = async ({date,typeEvent}) => {
-    const query = `select eve.id,pat.name title,dstart start,dend end,tyev.id resourceId,
+    const query = `select eve.id,pat.name title,dstart as start,dend as end,tyev.id resourceId,
         (CASE WHEN (select 1 from notification_events where id_event = eve.id) = 1 THEN
         1
         ELSE 
