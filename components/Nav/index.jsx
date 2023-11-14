@@ -29,7 +29,7 @@ export default function App({eventsType}) {
     const idtokenverdinho = (await api.get('verdinho/session')).data.data;
     if(idtokenverdinho.length > 0){
         const results = await api.get(`http://localhost:3000/session/status/${idtokenverdinho[0].value}`);
-        console.log(results.data);
+        setStateWhatsapp(results.data.state)
       }
   }
 
