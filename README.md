@@ -5,6 +5,7 @@
 ```bash
 git clone https://github.com/Anderson1303/av_frontend.git
 cd app
+docker build -f ./Dockerfile -t app:1.0 .
 ```
 
 2. Install the dependencies:
